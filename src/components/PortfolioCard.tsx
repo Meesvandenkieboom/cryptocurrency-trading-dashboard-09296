@@ -1,9 +1,14 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchBitcoinPrices = async () => {
+interface PortfolioCardProps {
+  cryptoId: string;
+  cryptoName: string;
+}
+
+const fetchCryptoPrices = async (cryptoId: string) => {
   const response = await fetch(
-    "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=180&interval=daily"
+    `https://api.coingecko.com/api/v3/coins/${cryptoId}/market_chart?vs_currency=usd&days=180&interval=daily`
   );
   const data = await response.json();
   
@@ -14,17 +19,17 @@ const fetchBitcoinPrices = async () => {
   }));
 };
 
-const PortfolioCard = () => {
+const PortfolioCard = ({ cryptoId, cryptoName }: PortfolioCardProps) => {
   const { data: priceData, isLoading } = useQuery({
-    queryKey: ['bitcoinPrices'],
-    queryFn: fetchBitcoinPrices,
-    refetchInterval: 60000, // Refetch every minute
+    queryKey: ['cryptoPrices', cryptoId],
+    queryFn: () => fetchCryptoPrices(cryptoId),
+    refetchInterval: 60000,
   });
 
   if (isLoading) {
     return (
       <div className="glass-card p-6 rounded-lg mb-8 animate-fade-in">
-        <h2 className="text-xl font-semibold mb-6">Bitcoin Performance</h2>
+        <h2 className="text-xl font-semibold mb-6">{cryptoName} Performance</h2>
         <div className="w-full h-[200px] flex items-center justify-center">
           <span className="text-muted-foreground">Loading...</span>
         </div>
@@ -34,7 +39,7 @@ const PortfolioCard = () => {
 
   return (
     <div className="glass-card p-6 rounded-lg mb-8 animate-fade-in">
-      <h2 className="text-xl font-semibold mb-6">Bitcoin Performance</h2>
+      <h2 className="text-xl font-semibold mb-6">{cryptoName} Performance</h2>
       <div className="w-full h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={priceData}>

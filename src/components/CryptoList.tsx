@@ -1,8 +1,9 @@
 import { ArrowUpIcon, ArrowDownIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const fetchCryptoData = async () => {
-  const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false');
+  const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false');
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
@@ -10,6 +11,7 @@ const fetchCryptoData = async () => {
 };
 
 const CryptoList = () => {
+  const navigate = useNavigate();
   const { data: cryptos, isLoading } = useQuery({
     queryKey: ['cryptos'],
     queryFn: fetchCryptoData,
@@ -35,7 +37,11 @@ const CryptoList = () => {
           </thead>
           <tbody>
             {cryptos?.map((crypto) => (
-              <tr key={crypto.symbol} className="border-t border-secondary">
+              <tr 
+                key={crypto.symbol} 
+                className="border-t border-secondary hover:bg-secondary cursor-pointer transition-colors"
+                onClick={() => navigate(`/crypto/${crypto.id}`)}
+              >
                 <td className="py-4">
                   <div className="flex items-center gap-2">
                     <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
