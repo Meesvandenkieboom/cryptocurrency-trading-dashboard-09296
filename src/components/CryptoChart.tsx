@@ -11,7 +11,7 @@ const CryptoChart = ({ symbol, cryptoName }: CryptoChartProps) => {
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold">{cryptoName} Price</h2>
       </div>
-      <div className="h-[400px] w-full">
+      <div className="h-[600px] w-full">
         <TradingViewWidget
           symbol={symbol}
           theme="light"
