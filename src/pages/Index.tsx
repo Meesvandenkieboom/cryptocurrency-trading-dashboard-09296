@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import MarketStats from "@/components/MarketStats";
 import CryptoChart from "@/components/CryptoChart";
-import PortfolioCard from "@/components/PortfolioCard";
+import RegimeAnalysis from "@/components/RegimeAnalysis";
 
 const CRYPTO_MAP: Record<string, { name: string; symbol: string; tradingViewSymbol: string }> = {
   bitcoin: { name: "Bitcoin", symbol: "BTC", tradingViewSymbol: "BINANCE:BTCUSDT" },
@@ -48,7 +48,7 @@ const Index = () => {
           cryptoName={crypto.name}
         />
         
-        <PortfolioCard cryptoId={displayCryptoId} cryptoName={crypto.name} />
+        <RegimeAnalysis cryptoId={displayCryptoId} cryptoName={crypto.name} />
       </div>
     </div>
   );
